@@ -35,10 +35,3 @@ model.fit(X_train, y_train, epochs=10)
 
 print ("{} is this loss ???".format(model.evaluate(X_test, y_test)))
 predictions = model.predict([X_test])
-
-name = "mnist_dataset_model_128x2_{}".format(int(time.time()))
-tenbor = TensorBoard(log_dir="logs/{}".format(name))
-# for i in range(10):
-#     plt.subplot(2,5,i+1)
-#     plt.imshow(x_test[i])
-# plt.show()
