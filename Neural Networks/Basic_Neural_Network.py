@@ -2,6 +2,8 @@ import tensorflow as tf
 from matplotlib import pyplot as plt
 import numpy as np
 import os
+import time
+from tensorflow.keras.callbacks import TensorBoard
 
 
 def CreateModel():
@@ -17,9 +19,6 @@ def CreateModel():
     model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
     model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
 
-    model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", mertrics=["accuracy"])
-
-    model.fit(X_train, y_train, epochs=3)
     model.save("Basic_Neural_Network.model")
 
 if not(os.path.exists("Basic_Neural_Network.model")):
@@ -31,12 +30,15 @@ X_train = tf.keras.utils.normalize(x_train, axis=1)
 X_test = tf.keras.utils.normalize(x_test, axis=1)
 
 model = tf.keras.models.load_model("Basic_Neural_Network.model")
-print (model.evaluate(X_test, y_test , verbose=1))
-predictions = model.predict([X_test])
-for i in range(10):
-    print (np.argmax(predictions[i]))
+model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", mertrics=["accuracy"])
+model.fit(X_train, y_train, epochs=10)
 
-for i in range(10):
-    plt.subplot(2,5,i+1)
-    plt.imshow(x_test[i])
-plt.show()
+print ("{} is this loss ???".format(model.evaluate(X_test, y_test)))
+predictions = model.predict([X_test])
+
+name = "mnist_dataset_model_128x2_{}".format(int(time.time()))
+tenbor = TensorBoard(log_dir="logs/{}".format(name))
+# for i in range(10):
+#     plt.subplot(2,5,i+1)
+#     plt.imshow(x_test[i])
+# plt.show()
