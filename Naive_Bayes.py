@@ -4,7 +4,8 @@ import numpy as np
 import PyGnuplot as gp
 from matplotlib import pyplot as plt
 from scipy import stats
-from sklearn import naive_bayes
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.utils import shuffle
 import urllib2 as ulib
 
 def data_loader():
@@ -26,8 +27,21 @@ def main():
         data_loader()
     df = pd.read_csv("spamdata.csv")
     names = df.columns
-    names = ['address','$','average']
-    print df.loc[:,names]
+    names = names[0:len(names)-1]
+    X = df.loc[:,names].values
+    y = df.loc[:,'spam'].values
+    X,y = shuffle(X,y)
+    X_train = X[:3680,:]
+    y_train = y[:3680]
+    X_test = X[3680:,:]
+    y_test = y[3680:]
+    model = MultinomialNB()
+    model.fit(X_train,y_train)
+    pred = model.predict(X_test)
+    # for i in range(100):
+    #     print "{} \t {} \n".format(pred[i], y_test[i])
+    # print model.predict_proba(X_test)
+    print model.score(X_test,y_test)
 
 if __name__ == '__main__':
     main()
