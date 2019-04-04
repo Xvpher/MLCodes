@@ -16,7 +16,7 @@ def data_loader():
     for i,line in enumerate(data_names):
         if i>32 and i<87:
             names.append(str(line.split()[0].split("_")[2].split(":")[0]))
-        elif i>86:
+        else i>86:
             names.append(str(line.split()[0].split("_")[3].split(":")[0]))
     names.append("spam")
     df = pd.read_csv(url_data, header=None, names=names)
@@ -38,10 +38,12 @@ def main():
     model = MultinomialNB()
     model.fit(X_train,y_train)
     pred = model.predict(X_test)
-    # for i in range(100):
-    #     print "{} \t {} \n".format(pred[i], y_test[i])
-    # print model.predict_proba(X_test)
     print model.score(X_test,y_test)
+    plt.hist(df['spam'])
+    plt.title('Spam Mail and Non-Spam Mails')
+    plt.xlabel('Spam Mail = 1, Non-Spam = 0')
+    plt.ylabel('Number Of Emails')
+    plt.savefig("Naive_Bayes_Plot.pdf")
 
 if __name__ == '__main__':
     main()
