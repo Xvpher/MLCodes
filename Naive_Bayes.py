@@ -16,7 +16,7 @@ def data_loader():
     for i,line in enumerate(data_names):
         if i>32 and i<87:
             names.append(str(line.split()[0].split("_")[2].split(":")[0]))
-        else i>86:
+        elif i>86:
             names.append(str(line.split()[0].split("_")[3].split(":")[0]))
     names.append("spam")
     df = pd.read_csv(url_data, header=None, names=names)
